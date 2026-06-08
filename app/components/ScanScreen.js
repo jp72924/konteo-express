@@ -18,7 +18,7 @@ import { navigate }     from '../router.js';
 import { notify }       from '../notify.js';
 import { formatUsd, usdToBs, formatBs, formatDual } from '../currency.js';
 import { searchProducts, getProduct }   from '../services/products.js';
-import { esc, initials, kioskHeader } from './utils.js';
+import { esc, initials, kioskHeader, icon } from './utils.js';
 import { _progressSteps } from './HomeScreen.js';
 
 export const ScanScreen = {
@@ -57,7 +57,7 @@ export const ScanScreen = {
           <div class="field-group">
             <div class="field-label">Buscar producto</div>
             <div class="search-wrap">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon">${icon('search')}</span>
               <input
                 id="search-input"
                 type="search"
@@ -74,7 +74,7 @@ export const ScanScreen = {
           <!-- Exchange-rate unavailable warning -->
           <div id="rate-warning" style="${store.get('exchange_rate_unavailable') ? '' : 'display:none'}">
             <div class="low-stock-banner">
-              <span class="low-stock-banner-icon">⚠️</span>
+              <span class="low-stock-banner-icon">${icon('warning')}</span>
               <span>Tipo de cambio no disponible. Los precios pueden no ser exactos.</span>
             </div>
           </div>
@@ -95,14 +95,14 @@ export const ScanScreen = {
 
           <div id="low-stock-banner" style="${_hasLowStock(cart) ? '' : 'display:none'}">
             <div class="low-stock-banner">
-              <span class="low-stock-banner-icon">⚠️</span>
+              <span class="low-stock-banner-icon">${icon('warning')}</span>
               <span>Uno o más productos tienen <strong>existencias limitadas</strong>. Revisa tu carrito antes de pagar.</span>
             </div>
           </div>
 
           <div id="stock-alert" style="display:none">
             <div class="alert-box">
-              <div class="alert-icon">⚠️</div>
+              <div class="alert-icon">${icon('warning')}</div>
               <div class="alert-text" id="stock-alert-text"></div>
             </div>
           </div>

@@ -16,7 +16,7 @@ import { CONFIG }   from '../config.js';
 import { store }    from '../store.js';
 import { navigate } from '../router.js';
 import { formatDual } from '../currency.js';
-import { esc, kioskHeader } from './utils.js';
+import { esc, kioskHeader, icon } from './utils.js';
 
 export const SuccessScreen = {
   mount(container, _params = {}) {
@@ -44,7 +44,7 @@ export const SuccessScreen = {
         ${_header()}
 
         <div class="kiosk-body">
-          <div class="success-icon">✅</div>
+          <div class="success-icon">${icon('check')}</div>
 
           <div class="text-center">
             <div class="screen-title">${pendingReview ? 'Pago registrado' : '¡Pago exitoso!'}</div>

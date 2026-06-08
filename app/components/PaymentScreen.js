@@ -9,17 +9,17 @@ import { CONFIG }   from '../config.js';
 import { store }    from '../store.js';
 import { navigate } from '../router.js';
 import { formatDual } from '../currency.js';
-import { esc, kioskHeader } from './utils.js';
+import { esc, kioskHeader, icon } from './utils.js';
 import { _progressSteps } from './HomeScreen.js';
 
 /** Display map: RetailOps payment_method value → { label, desc, icon } */
 const PAYMENT_DISPLAY = {
-  cash:           { label: 'Efectivo',                 desc: 'Billetes y monedas',            icon: '💵' },
-  mobile_payment: { label: 'Pago movil',               desc: 'BDV, Mercantil, BBVA...',       icon: '📱' },
-  bank_transfer:  { label: 'Transferencia bancaria',   desc: 'Desde tu app bancaria',         icon: '🏦' },
-  card:           { label: 'Tarjeta debito / credito', desc: 'Visa, Mastercard, AmEx',        icon: '💳' },
-  check:          { label: 'Cheque',                   desc: 'Cheque a nombre de la empresa', icon: '📄' },
-  other:          { label: 'Otro metodo',              desc: 'Consulta en caja',              icon: '💱' },
+  cash:           { label: 'Efectivo',                 desc: 'Billetes y monedas',            icon: 'cash' },
+  mobile_payment: { label: 'Pago movil',               desc: 'BDV, Mercantil, BBVA...',       icon: 'phone' },
+  bank_transfer:  { label: 'Transferencia bancaria',   desc: 'Desde tu app bancaria',         icon: 'bank' },
+  card:           { label: 'Tarjeta debito / credito', desc: 'Visa, Mastercard, AmEx',        icon: 'card' },
+  check:          { label: 'Cheque',                   desc: 'Cheque a nombre de la empresa', icon: 'document' },
+  other:          { label: 'Otro metodo',              desc: 'Consulta en caja',              icon: 'swap' },
 };
 
 const RECEIPT_METHODS = ['mobile_payment', 'bank_transfer'];
@@ -41,11 +41,11 @@ export const PaymentScreen = {
     const rateUnavailable = store.get('exchange_rate_unavailable') ?? false;
 
     const methodCards = CONFIG.ENABLED_PAYMENT_METHODS.map(method => {
-      const d   = PAYMENT_DISPLAY[method] ?? { label: method, desc: '', icon: '💱' };
+      const d   = PAYMENT_DISPLAY[method] ?? { label: method, desc: '', icon: 'swap' };
       const sel = method === this._selected ? ' selected' : '';
       return `
         <div class="payment-option${sel}" data-method="${esc(method)}">
-          <div class="payment-option-icon">${d.icon}</div>
+          <div class="payment-option-icon">${icon(d.icon)}</div>
           <div>
             <div class="payment-option-label">${esc(d.label)}</div>
             <div class="payment-option-desc">${esc(d.desc)}</div>
@@ -76,7 +76,7 @@ export const PaymentScreen = {
 
           <div id="rate-warning" style="${rateUnavailable ? '' : 'display:none'}">
             <div class="low-stock-banner">
-              <span class="low-stock-banner-icon">⚠️</span>
+              <span class="low-stock-banner-icon">${icon('warning')}</span>
               <span>Tipo de cambio no disponible. Los precios pueden no ser exactos.</span>
             </div>
           </div>
@@ -89,12 +89,12 @@ export const PaymentScreen = {
 
           ${hasLowStock ? `
           <div class="low-stock-banner">
-            <span class="low-stock-banner-icon">⚠️</span>
+            <span class="low-stock-banner-icon">${icon('warning')}</span>
             <span>Tu carrito contiene productos con <strong>existencias limitadas</strong>. Confirma pronto para asegurar tu compra.</span>
           </div>` : ''}
 
           <div class="alert-box">
-            <div class="alert-icon">🔒</div>
+            <div class="alert-icon">${icon('lock')}</div>
             <div class="alert-text">
               Pago 100% seguro. Ningún empleado manipula tu información de pago.
             </div>

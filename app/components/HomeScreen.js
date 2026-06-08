@@ -8,7 +8,7 @@
 import { CONFIG }   from '../config.js';
 import { navigate } from '../router.js';
 import { notify }   from '../notify.js';
-import { esc, kioskHeader } from './utils.js';
+import { esc, kioskHeader, icon } from './utils.js';
 
 export const HomeScreen = {
   /** @type {HTMLElement | null} */
@@ -29,19 +29,19 @@ export const HomeScreen = {
 
           <div class="option-grid">
             <div class="option-card highlight" id="btn-shop">
-              <div class="option-icon">🛒</div>
+              <div class="option-icon">${icon('cart')}</div>
               <div class="option-label">Pagar productos</div>
               <div class="option-desc">Busca y paga</div>
             </div>
             <div class="option-card" id="btn-help">
-              <div class="option-icon">🙋</div>
+              <div class="option-icon">${icon('help')}</div>
               <div class="option-label">Pedir ayuda</div>
               <div class="option-desc">Llamo a un asociado</div>
             </div>
           </div>
 
           <div class="alert-box">
-            <div class="alert-icon">ℹ️</div>
+            <div class="alert-icon">${icon('info')}</div>
             <div class="alert-text">
               Esta caja acepta
               <strong>${esc(_methodNames())}</strong>.

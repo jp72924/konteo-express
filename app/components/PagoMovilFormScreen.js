@@ -12,7 +12,7 @@ import { store } from '../store.js';
 import { navigate } from '../router.js';
 import { api } from '../api.js';
 import { formatBs, formatDual, usdToBs } from '../currency.js';
-import { esc, kioskHeader } from './utils.js';
+import { esc, kioskHeader, icon } from './utils.js';
 import { _progressSteps } from './HomeScreen.js';
 
 const RECEIPT_METHODS = ['mobile_payment', 'bank_transfer'];
@@ -467,7 +467,7 @@ function _uploadCardHtml() {
       <div class="section-label">Comprobante</div>
       <label class="receipt-upload" for="receipt-file">
         <input id="receipt-file" type="file" accept="image/jpeg,image/png,image/heic,image/heif,image/*" capture="environment" hidden>
-        <span class="receipt-upload-icon">📷</span>
+        <span class="receipt-upload-icon">${icon('camera')}</span>
         <span>
           <strong>Sube la captura de tu comprobante</strong>
           <small>JPG, PNG, HEIC o HEIF</small>

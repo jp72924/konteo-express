@@ -19,7 +19,7 @@ import { store }           from '../store.js';
 import { navigate }        from '../router.js';
 import { notify }          from '../notify.js';
 import { createCustomer, formatCedula } from '../services/customer.js';
-import { esc, initials, kioskHeader } from './utils.js';
+import { esc, initials, kioskHeader, icon } from './utils.js';
 import { _progressSteps }  from './HomeScreen.js';
 
 // ─── Venezuelan state → city map ─────────────────────────────────────────────
@@ -96,7 +96,7 @@ function _mountReturning(container, prefix, number, customer, _screen) {
         </div>
 
         <div class="alert-box">
-          <div class="alert-icon">ℹ️</div>
+          <div class="alert-icon">${icon('info')}</div>
           <div class="alert-text">
             Al continuar confirmas que eres el titular de la cédula
             <strong>${esc(cedula)}</strong>.
@@ -191,8 +191,8 @@ function _mountNewForm(container, prefix, number, _screen) {
           <div class="field-group">
             <div class="field-label">Sexo <span>*</span></div>
             <div class="sexo-btns">
-              <div class="sexo-btn" id="sexo-M">♂ Masc.</div>
-              <div class="sexo-btn" id="sexo-F">♀ Fem.</div>
+              <div class="sexo-btn" id="sexo-M">${icon('mars')} Masc.</div>
+              <div class="sexo-btn" id="sexo-F">${icon('venus')} Fem.</div>
             </div>
             <div class="field-err" id="err-sexo"></div>
           </div>

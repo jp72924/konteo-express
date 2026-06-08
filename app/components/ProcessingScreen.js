@@ -15,15 +15,15 @@ import { store }    from '../store.js';
 import { navigate } from '../router.js';
 import { formatDual } from '../currency.js';
 import { atomicCheckout } from '../services/orders.js';
-import { esc, kioskHeader } from './utils.js';
+import { esc, kioskHeader, icon } from './utils.js';
 
 const PAYMENT_DISPLAY = {
-  cash: '💵 Efectivo',
-  mobile_payment: '📱 Pago movil',
-  bank_transfer: '🏦 Transferencia bancaria',
-  card: '💳 Tarjeta debito/credito',
-  check: '📄 Cheque',
-  other: '💱 Otro metodo',
+  cash:           { icon: 'cash',     label: 'Efectivo' },
+  mobile_payment: { icon: 'phone',    label: 'Pago movil' },
+  bank_transfer:  { icon: 'bank',     label: 'Transferencia bancaria' },
+  card:           { icon: 'card',     label: 'Tarjeta debito/credito' },
+  check:          { icon: 'document', label: 'Cheque' },
+  other:          { icon: 'swap',     label: 'Otro metodo' },
 };
 
 export const ProcessingScreen = {
@@ -34,7 +34,7 @@ export const ProcessingScreen = {
 
   mount(container, params = {}) {
     const { totalUsd, paymentMethod = 'card' } = params;
-    const methodLabel = PAYMENT_DISPLAY[paymentMethod] || paymentMethod;
+    const methodInfo = PAYMENT_DISPLAY[paymentMethod] || { icon: 'swap', label: paymentMethod };
 
     this._controller = new AbortController();
 
@@ -53,7 +53,7 @@ export const ProcessingScreen = {
           <div class="processing-card">
             <div class="proc-label">Total cobrado</div>
             <div class="proc-total">${formatDual(totalUsd ?? 0)}</div>
-            <div class="proc-method">${esc(methodLabel)}</div>
+            <div class="proc-method"><span class="method-ico">${icon(methodInfo.icon)}</span> ${esc(methodInfo.label)}</div>
           </div>
 
           <div style="font-size:12px;color:var(--ft-gray-text)">
@@ -146,7 +146,7 @@ export const ProcessingScreen = {
         ${_header()}
 
         <div class="processing-body">
-          <div style="font-size:64px">❌</div>
+          <div class="proc-error-icon" style="font-size:64px">${icon('error')}</div>
 
           <div>
             <div class="processing-title" style="color:var(--ft-red)">Error de pago</div>

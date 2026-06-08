@@ -22,7 +22,7 @@
   <!-- Startup / auth error overlay — shown before bootstrap completes or on error -->
   <div id="startup-overlay" class="startup-overlay" hidden>
     <div class="startup-card">
-      <div class="startup-icon">⚠️</div>
+      <div class="startup-icon"><svg class="kx-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 2.5 20h19z"/><path d="M12 10v4"/><path d="M12 16.8v.4"/></svg></div>
       <p id="startup-msg" class="startup-msg">Iniciando kiosco…</p>
       <button id="startup-retry" class="btn-primary startup-retry">Reintentar</button>
     </div>
@@ -46,7 +46,7 @@
 
   <!-- PWA install banner — shown when the browser fires beforeinstallprompt -->
   <div id="install-banner" class="install-banner" hidden>
-    <span class="install-text">📲 Instala la app para acceso rápido</span>
+    <span class="install-text"><svg class="kx-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.6"/><path d="M12 7.5v6"/><path d="m9.5 11 2.5 2.5L14.5 11"/></svg> Instala la app para acceso rápido</span>
     <button id="install-btn" class="install-accept">Instalar</button>
     <button id="install-dismiss" class="install-dismiss" aria-label="Cerrar">✕</button>
   </div>
@@ -54,7 +54,7 @@
   <!-- Offline overlay — shown by main.js on window 'offline' event, hidden on 'online' -->
   <div id="offline-overlay" class="offline-overlay" hidden>
     <div class="offline-card">
-      <div class="offline-icon">📡</div>
+      <div class="offline-icon"><svg class="kx-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.7a16 16 0 0 1 20 0"/><path d="M5.5 12.2a11 11 0 0 1 13 0"/><path d="M9 15.7a6 6 0 0 1 6 0"/><path d="M12 19.2v.2"/><path d="M3 3l18 18"/></svg></div>
       <p class="offline-msg">Sin conexión</p>
       <p class="offline-sub">Verifica la red del kiosco y espera…</p>
     </div>
@@ -124,7 +124,7 @@
       LOCALE:                     "es-VE",
       IDLE_TIMEOUT_SECONDS:       120,
       PROCESSING_TIMEOUT_SECONDS: 60,
-      APP_VERSION:                "2.3.0"
+      APP_VERSION:                "2.3.1"
     };
   </script>
   <!-- Optional station-specific config. Missing file is safe; app/config.js

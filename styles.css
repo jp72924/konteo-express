@@ -1245,3 +1245,28 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 
 /* Profile + cards rounding consistency */
 .profile-badge { box-shadow: var(--kx-shadow-card); }
+
+/* ─── Inline line icons (replace emoji) ─────────────────────────── */
+.kx-ico {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.14em;
+  flex: none;
+  stroke: currentColor;
+  fill: none;
+}
+/* Icon container colours */
+.option-icon       { color: var(--ft-blue); line-height: 0; }
+.option-card.highlight .option-icon { color: var(--ft-blue); }
+.alert-icon        { color: var(--ft-amber); line-height: 0; }
+.low-stock-banner-icon { color: var(--ft-amber); }
+.search-icon       { color: var(--ft-gray-text); }
+.search-clear      { color: var(--ft-gray-text); }
+.payment-option-icon { color: var(--ft-blue); line-height: 0; }
+.receipt-upload-icon { color: var(--ft-blue); line-height: 0; }
+.success-icon      { color: var(--ft-green); line-height: 0; }
+.startup-icon      { color: var(--ft-amber); line-height: 0; }
+.offline-icon      { color: var(--ft-blue); line-height: 0; }
+.proc-error-icon   { color: var(--ft-red); line-height: 0; }
+.method-ico        { color: var(--ft-blue); }
