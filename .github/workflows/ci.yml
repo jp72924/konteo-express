@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check shell scripts
+        run: |
+          bash -n install.sh
+          bash -n scripts/serve-kiosk.sh
+          bash -n scripts/check-kiosk.sh
+
+      - name: Check kiosk JavaScript
+        run: bash scripts/check-kiosk.sh
+
+      - name: Check public config hygiene
+        run: |
+          test ! -f config.local.js
+          ! grep -R "IjSX7wKyp8JzJi8Or4cqUXfiytD7FBgaj9ylbrR68CoXovvl" .
+          grep -q '<KIOSK_API_KEY>' index.html
+          grep -q '<KIOSK_API_KEY>' config.example.js

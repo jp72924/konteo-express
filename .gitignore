@@ -1,0 +1,37 @@
+# Station-specific runtime configuration
+config.local.js
+
+# Local development artifacts
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+
+# Optional tooling output
+node_modules/
+coverage/
+.nyc_output/
+.cache/
+dist/
+build/
+
+# Capacitor build output (www is assembled by scripts/build-www.mjs)
+www/
+
+# Capacitor native build artifacts (the android/ and ios/ project dirs ARE
+# committed, but their generated build outputs are not)
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/app/release/
+ios/App/build/
+ios/App/Pods/
+ios/App/App/public/
+
+# Local editor and environment files
+.env
+.env.*
+.vscode/
+.idea/

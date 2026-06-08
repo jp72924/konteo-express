@@ -1,0 +1,11 @@
+{
+  "appId": "com.retailops.kiosk",
+  "appName": "RetailOps Kiosk",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}

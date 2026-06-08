@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#AB111E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Koteo Express">
+  <title>RetailOps Kiosk</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon-192.svg">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+</head>
+<body>
+
+  <!-- Startup / auth error overlay — shown before bootstrap completes or on error -->
+  <div id="startup-overlay" class="startup-overlay" hidden>
+    <div class="startup-card">
+      <div class="startup-icon">⚠️</div>
+      <p id="startup-msg" class="startup-msg">Iniciando kiosco…</p>
+      <button id="startup-retry" class="btn-primary startup-retry">Reintentar</button>
+    </div>
+  </div>
+
+  <!--
+    file:// detection: ES module imports fail silently when opened via file://.
+    This non-module script runs before main.js and shows a helpful error
+    if the app has not started within 3 seconds (module load failed).
+  -->
+  <script>
+    if (location.protocol === 'file:') {
+      var ov  = document.getElementById('startup-overlay');
+      var msg = document.getElementById('startup-msg');
+      var btn = document.getElementById('startup-retry');
+      ov.hidden  = false;
+      msg.textContent = 'El kiosco debe abrirse desde un servidor HTTP, no desde el sistema de archivos local. Ejecuta: python -m http.server 8080 en la carpeta kiosk/ y accede a http://localhost:8080';
+      btn.style.display = 'none';
+    }
+  </script>
+
+  <!-- PWA install banner — shown when the browser fires beforeinstallprompt -->
+  <div id="install-banner" class="install-banner" hidden>
+    <span class="install-text">📲 Instala la app para acceso rápido</span>
+    <button id="install-btn" class="install-accept">Instalar</button>
+    <button id="install-dismiss" class="install-dismiss" aria-label="Cerrar">✕</button>
+  </div>
+
+  <!-- Offline overlay — shown by main.js on window 'offline' event, hidden on 'online' -->
+  <div id="offline-overlay" class="offline-overlay" hidden>
+    <div class="offline-card">
+      <div class="offline-icon">📡</div>
+      <p class="offline-msg">Sin conexión</p>
+      <p class="offline-sub">Verifica la red del kiosco y espera…</p>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="notif" role="status" aria-live="polite"></div>
+
+  <!-- Main app container — screens are injected here by main.js -->
+  <div id="app"></div>
+
+  <!-- ─────────────────────────────────────────────────────────────
+       Safe default configuration.
+       For real deployments, copy config.example.js to config.local.js and put
+       the station-specific values there. config.local.js is intentionally not
+       committed because it contains the per-station Kiosk API key.
+  ──────────────────────────────────────────────────────────────── -->
+  <script>
+    window.__KIOSK_CONFIG__ = {
+      BASE_URL:                   "http://127.0.0.1:8000",
+      API_PATH:                   "/api/v1",
+
+      // Per-station API key — provisioned via:
+      //   python manage.py provision_kiosk --store <ID> --station <N>
+      // Replace the placeholder below with the key printed during provisioning.
+      // Never share this key or check it into version control.
+      KIOSK_API_KEY:              "<KIOSK_API_KEY>",
+
+      STORE_NAME:                 "Koteo Express",
+      STORE_ADDRESS:              "Sucursal Principal",
+      KIOSK_STATION_NUMBER:       "1",
+
+      // Koteo Express branding (extracted from the branding demo).
+      // BRAND_LOGO_URL points to the bundled logo asset.
+      BRAND_LOGO_URL:             "./assets/branding/koteo-express-logo.svg",
+      BRAND_LOGO_ALT:             "Koteo Express",
+      BRAND_SUBTITLE:             "compra rapida",
+      BRAND_SHOW_TEXT:            true,
+      KIOSK_THEME: {
+        primary:           "#AB111E",
+        primaryLight:      "#CE1B2C",
+        primaryDark:       "#870F19",
+        primarySoft:       "#FFF1F2",
+        primarySoftStrong: "#F9D7DC",
+        accent:            "#FFD6DC",
+        background:        "#FFF7F8",
+        surface:           "#FFFFFF",
+        text:              "#211316",
+        muted:             "#71565B",
+        success:           "#168A5A",
+        warning:           "#D97706",
+        danger:            "#D92D3A",
+        border:            "rgba(171, 17, 30, 0.18)",
+        onPrimary:         "#FFFFFF",
+        onPrimaryMuted:    "rgba(255,255,255,0.74)",
+        onPrimarySoft:     "rgba(255,255,255,0.90)"
+      },
+
+      USD_TO_BS_RATE:             50.00,
+      EXCHANGE_RATE_API_URL:      "",
+
+      CURRENCY_SYMBOL:            "Bs.",
+      DECIMAL_PLACES:             2,
+      LOW_STOCK_THRESHOLD:        5,
+      ENABLED_PAYMENT_METHODS:    ["card", "mobile_payment", "bank_transfer"],
+
+      LOCALE:                     "es-VE",
+      IDLE_TIMEOUT_SECONDS:       120,
+      PROCESSING_TIMEOUT_SECONDS: 60,
+      APP_VERSION:                "2.2.0"
+    };
+  </script>
+  <!-- Optional station-specific config. Missing file is safe; app/config.js
+       keeps the defaults above and displays a startup error for placeholders. -->
+  <script src="./config.local.js"></script>
+  <!-- Native (Capacitor) runtime overrides from in-app provisioning.
+       No-op in the browser PWA unless a SettingsScreen override is saved. -->
+  <script src="./app/native-config.js"></script>
+  <script type="module" src="./app/main.js"></script>
+
+  <!--
+    Service worker registration.
+    Runs after the page loads so the app shell is functional before the SW
+    takes over caching. The version string is sent via postMessage so the SW
+    can name its cache to match APP_VERSION.
+  -->
+  <script>
+    // Skip the service worker inside the Capacitor native shell — assets are
+    // already served locally from the bundle, so SW caching is redundant there.
+    if ('serviceWorker' in navigator && !window.__IS_NATIVE__) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', { scope: './' }).then((reg) => {
+          // Send the configured app version to the SW so it can name its cache
+          const cfg = window.__KIOSK_CONFIG__;
+          const sw  = reg.installing || reg.waiting || reg.active;
+          if (sw && cfg?.APP_VERSION) {
+            sw.postMessage({ type: 'SET_VERSION', version: cfg.APP_VERSION });
+          }
+        }).catch(() => {
+          // SW registration failures are non-fatal — the app works without it
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
