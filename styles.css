@@ -1307,3 +1307,12 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 }
 .header-back:hover  { background: rgba(255, 255, 255, 0.22); color: var(--ft-on-primary); }
 .header-back:active { transform: scale(.94); }
+
+/* ─── Primary button: center text + trailing icon ───────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+.btn-primary .kx-ico { font-size: 1.15em; }

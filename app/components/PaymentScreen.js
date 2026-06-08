@@ -102,7 +102,7 @@ export const PaymentScreen = {
         </div>
 
         <div class="bottom-bar">
-          <button class="btn-primary" id="btn-confirm">Confirmar y pagar →</button>
+          <button class="btn-primary" id="btn-confirm">Confirmar y pagar ${icon('forward')}</button>
         </div>
       </div>
     `;

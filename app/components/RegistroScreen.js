@@ -107,7 +107,7 @@ function _mountReturning(container, prefix, number, customer, _screen) {
       </div>
 
       <div class="bottom-bar">
-        <button class="btn-primary" id="btn-confirm">Confirmar identidad →</button>
+        <button class="btn-primary" id="btn-confirm">Confirmar identidad ${icon('forward')}</button>
       </div>
     </div>
   `;
@@ -227,7 +227,7 @@ function _mountNewForm(container, prefix, number, _screen) {
       </div>
 
       <div class="bottom-bar">
-        <button class="btn-primary" id="btn-registro" disabled>Continuar →</button>
+        <button class="btn-primary" id="btn-registro" disabled>Continuar ${icon('forward')}</button>
       </div>
     </div>
   `;
@@ -351,7 +351,7 @@ function _mountNewForm(container, prefix, number, _screen) {
         notify(err.message || 'Error al registrar. Intenta nuevamente.', 'error');
       }
       btnRegistro.disabled = false;
-      btnRegistro.textContent = 'Continuar →';
+      btnRegistro.innerHTML = `Continuar ${icon('forward')}`;
     }
   });
 }

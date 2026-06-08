@@ -32,6 +32,7 @@ const _ICON_PATHS = {
   backspace:'<path d="M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-6.2-6.3a1 1 0 0 1 0-1.4z"/><path d="M16 9.5l-5 5M11 9.5l5 5"/>',
   checkmark:'<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>',
   back:     '<path d="M19 12H5.5"/><path d="m12 5-7 7 7 7"/>',
+  forward:  '<path d="M5 12h13.5"/><path d="m12 5 7 7-7 7"/>',
 };
 
 /**

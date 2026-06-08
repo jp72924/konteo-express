@@ -147,7 +147,7 @@ export const PagoMovilFormScreen = {
         </div>
 
         <div class="bottom-bar">
-          <button class="btn-primary" id="btn-confirm-receipt" disabled>Confirmar pago →</button>
+          <button class="btn-primary" id="btn-confirm-receipt" disabled>Confirmar pago ${icon('forward')}</button>
         </div>
       </div>
     `;

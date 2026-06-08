@@ -110,7 +110,7 @@ export const ScanScreen = {
 
         <div class="bottom-bar">
           <button class="btn-primary" id="btn-pay" ${cart.length === 0 ? 'disabled' : ''}>
-            Ver métodos de pago →
+            Ver métodos de pago ${icon('forward')}
           </button>
         </div>
 
@@ -517,7 +517,7 @@ export const ScanScreen = {
         });
 
         btn.disabled    = false;
-        btn.textContent = 'Ver métodos de pago →';
+        btn.innerHTML = `Ver métodos de pago ${icon('forward')}`;
         return;
       }
 
@@ -525,7 +525,7 @@ export const ScanScreen = {
     } catch (err) {
       notify(err.message || 'Error al verificar. Intenta nuevamente.', 'error');
       btn.disabled    = false;
-      btn.textContent = 'Ver métodos de pago →';
+      btn.innerHTML = `Ver métodos de pago ${icon('forward')}`;
     }
   },
 };
