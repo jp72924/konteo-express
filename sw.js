@@ -1,5 +1,5 @@
 /**
- * sw.js — RetailOps Kiosk Service Worker
+ * sw.js — Konteo Express Service Worker
  *
  * ── Cache strategies ────────────────────────────────────────────────────────
  *
@@ -44,8 +44,8 @@
  *  Keep CACHE_VERSION in sync with CONFIG.APP_VERSION in index.html.
  */
 
-const CACHE_VERSION = '2.3.4'; // keep in sync with CONFIG.APP_VERSION in index.html
-let   CACHE_NAME    = `retailops-kiosk-v${CACHE_VERSION}`;
+const CACHE_VERSION = '2.3.5'; // keep in sync with CONFIG.APP_VERSION in index.html
+let   CACHE_NAME    = `konteo-express-v${CACHE_VERSION}`;
 const APP_SHELL_URL = new URL('./index.html', self.location.href).href;
 const SW_URL_PATH = new URL('./sw.js', self.location.href).pathname;
 const LOCAL_CONFIG_PATH = new URL('./config.local.js', self.location.href).pathname;
@@ -97,7 +97,7 @@ const SHELL_ASSETS = [
 
 self.addEventListener('message', (event) => {
   if (event.data?.type === 'SET_VERSION') {
-    CACHE_NAME = `retailops-kiosk-v${event.data.version}`;
+    CACHE_NAME = `konteo-express-v${event.data.version}`;
   }
 });
 

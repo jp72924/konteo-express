@@ -1,4 +1,4 @@
-package com.retailops.kiosk;
+package com.konteo.express;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">RetailOps Kiosk</string>
-    <string name="title_activity_main">RetailOps Kiosk</string>
-    <string name="package_name">com.retailops.kiosk</string>
-    <string name="custom_url_scheme">com.retailops.kiosk</string>
+    <string name="app_name">Konteo Express</string>
+    <string name="title_activity_main">Konteo Express</string>
+    <string name="package_name">com.konteo.express</string>
+    <string name="custom_url_scheme">com.konteo.express</string>
 </resources>

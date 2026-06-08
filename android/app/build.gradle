@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.retailops.kiosk"
+    namespace "com.konteo.express"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.retailops.kiosk"
+        applicationId "com.konteo.express"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
