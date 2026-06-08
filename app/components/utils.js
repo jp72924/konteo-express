@@ -31,6 +31,7 @@ const _ICON_PATHS = {
   venus:   '<circle cx="12" cy="9" r="5.5"/><path d="M12 14.5V21"/><path d="M9 18h6"/>',
   backspace:'<path d="M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-6.2-6.3a1 1 0 0 1 0-1.4z"/><path d="M16 9.5l-5 5M11 9.5l5 5"/>',
   checkmark:'<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>',
+  back:     '<path d="M19 12H5.5"/><path d="m12 5-7 7 7 7"/>',
 };
 
 /**
@@ -80,7 +81,7 @@ export function initials(name) {
  * @param {object} opts
  * @param {string} [opts.storeName]
  * @param {string} [opts.storeAddress]
- * @param {string} [opts.actionLabel]  Text for the right-side action (e.g. "✕ Cancelar")
+ * @param {string} [opts.actionLabel]  Accessible label for the right-side action (e.g. "Volver")
  * @param {string} [opts.actionId]     ID for the action element
  * @returns {string}
  */
@@ -91,10 +92,13 @@ export function kioskHeader({ storeName, storeAddress, actionLabel, actionId, em
   const now  = new Date();
   const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
 
+  // A single back/exit affordance — one chevron covers both "Cancelar" and
+  // "Volver". The visible glyph is an icon only; the action text becomes the
+  // accessible label.
   const right = emptyRight
     ? '<div></div>'
     : actionLabel
-    ? `<div id="${actionId ?? 'header-action'}" class="header-action">${esc(actionLabel)}</div>`
+    ? `<button type="button" id="${actionId ?? 'header-action'}" class="header-action header-back" aria-label="${esc(actionLabel)}">${icon('back')}</button>`
     : `<div><div class="store-name">${esc(address)}</div><div class="store-time">${time}</div></div>`;
 
   return `

@@ -596,5 +596,5 @@ function _productThumb(product, extraClass = '') {
 }
 
 function _header() {
-  return kioskHeader({ actionLabel: '\u2715 Cancelar', actionId: 'cancel-btn' });
+  return kioskHeader({ actionLabel: 'Cancelar', actionId: 'cancel-btn' });
 }

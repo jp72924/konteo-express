@@ -495,7 +495,7 @@ function _manualOnlyHtml() {
 }
 
 function _header() {
-  return kioskHeader({ actionLabel: '\u2190 Volver', actionId: 'back-btn' });
+  return kioskHeader({ actionLabel: 'Volver', actionId: 'back-btn' });
 }
 
 function _fileToDataUrl(file) {

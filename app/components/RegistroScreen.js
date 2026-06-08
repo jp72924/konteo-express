@@ -359,7 +359,7 @@ function _mountNewForm(container, prefix, number, _screen) {
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 
 function _header() {
-  return kioskHeader({ actionLabel: '\u2190 Volver', actionId: 'back-btn' });
+  return kioskHeader({ actionLabel: 'Volver', actionId: 'back-btn' });
 }
 
 function _clearErrors(container) {

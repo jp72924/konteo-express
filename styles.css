@@ -1287,3 +1287,23 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 .num-key.ok  .kx-ico { stroke-width: 2.4; }      /* a touch bolder check */
 .num-key.ok.is-loading .kx-ico { animation: kxPulse .8s ease-in-out infinite; }
 @keyframes kxPulse { 0%,100% { opacity: .4; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.05); } }
+
+/* ─── Unified header back/exit icon button ──────────────────────── */
+.header-back {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--ft-on-primary-soft);
+  font-size: 20px;              /* sizes the 1em .kx-ico */
+  line-height: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background .15s ease, color .15s ease, transform .12s ease;
+}
+.header-back:hover  { background: rgba(255, 255, 255, 0.22); color: var(--ft-on-primary); }
+.header-back:active { transform: scale(.94); }
