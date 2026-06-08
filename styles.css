@@ -6,30 +6,38 @@
 
 /* ─── Design tokens ─────────────────────────────────────────── */
 :root {
-  --ft-blue:        #0057A8;
-  --ft-blue-light:  #1A72C8;
-  --ft-blue-dark:   #003D7A;
-  --ft-primary-soft: #EEF5FF;
-  --ft-primary-soft-strong: #D6E8FF;
-  --ft-accent:      #00CFFF;
-  --ft-gray-bg:     #F4F6FA;
-  --ft-gray-light:  #E8ECF2;
-  --ft-gray-text:   #6B7280;
+  /* Konteo Express brand palette (overridden at runtime by KIOSK_THEME) */
+  --ft-blue:        #C41E2A;
+  --ft-blue-light:  #D93340;
+  --ft-blue-dark:   #A4151F;
+  --ft-primary-soft: #FEF2F2;
+  --ft-primary-soft-strong: #FDE3E3;
+  --ft-accent:      #FF8A1F;
+  --ft-gray-bg:     #FFF8F4;
+  --ft-gray-light:  #F3E8E2;
+  --ft-gray-text:   #8A7775;
   --ft-surface:     #FFFFFF;
-  --ft-text:        #1A2033;
-  --ft-green:       #1D9E75;
-  --ft-red:         #E24B4A;
-  --ft-amber:       #EF9F27;
-  --ft-border:      rgba(0, 87, 168, 0.15);
+  --ft-text:        #1A1212;
+  --ft-green:       #168A5A;
+  --ft-red:         #D93340;
+  --ft-amber:       #FFB020;
+  --ft-border:      rgba(26, 18, 18, 0.08);
   --ft-on-primary:  #FFFFFF;
-  --ft-on-primary-muted: rgba(255,255,255,0.72);
-  --ft-on-primary-soft: rgba(255,255,255,0.86);
+  --ft-on-primary-muted: rgba(255,255,255,0.74);
+  --ft-on-primary-soft: rgba(255,255,255,0.90);
+
+  /* Type + elevation tokens (Konteo Express design system) */
+  --kx-font-display: 'Rubik', 'Segoe UI', system-ui, sans-serif;
+  --kx-font-body:    'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+  --kx-shadow-soft:  0 10px 40px -12px rgba(196, 30, 42, 0.30);
+  --kx-shadow-card:  0 8px 30px -10px rgba(26, 18, 18, 0.18);
+  --kx-radius:       18px;
 }
 
 /* ─── Base ───────────────────────────────────────────────────── */
 html, body {
   height: 100%;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: var(--kx-font-body);
   background: var(--ft-gray-bg);
   color: var(--ft-text);
   -webkit-tap-highlight-color: transparent;
@@ -1114,3 +1122,126 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
   color: var(--ft-text);
 }
 .prov-input:focus { outline: none; border-color: var(--ft-blue); }
+
+/* ═══════════════════════════════════════════════════════════════
+   KONTEO EXPRESS — design language
+   Rubik (display) + Nunito Sans (body), rounded cards, soft red glow,
+   amber accents, hover lift. Layered after base rules so it wins.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Display typography */
+.logo-text,
+.screen-title,
+.profile-name,
+.step-dot,
+.qty-value,
+.proc-total,
+.ticket-total,
+.search-result-price,
+.cart-item-price,
+.option-label {
+  font-family: var(--kx-font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Brand wordmark — italic black "EXPRESS" lockup */
+.logo-text { font-weight: 800; letter-spacing: -0.02em; }
+.logo-sub  {
+  font-family: var(--kx-font-display);
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.22em;
+}
+
+/* Header — solid brand bar with a soft drop */
+.kiosk-header {
+  box-shadow: 0 6px 22px -14px rgba(26, 18, 18, 0.45);
+}
+
+/* Section headings */
+.screen-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ft-text);
+  letter-spacing: -0.02em;
+}
+.screen-sub { font-size: 13px; color: var(--ft-gray-text); }
+
+/* Primary / secondary buttons — pill-soft, red glow, lift on hover */
+.btn-primary {
+  border-radius: 16px;
+  font-family: var(--kx-font-display);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: var(--kx-shadow-soft);
+  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.btn-primary:hover  { transform: translateY(-2px); }
+.btn-primary:active { transform: translateY(0) scale(.99); }
+.btn-secondary {
+  border-radius: 16px;
+  font-family: var(--kx-font-display);
+  font-weight: 800;
+  border-width: 1.5px;
+  transition: transform .15s ease, background .15s ease;
+}
+.btn-secondary:hover { transform: translateY(-1px); }
+
+/* Home choice tiles — rounded cards that lift */
+.option-card {
+  border-radius: var(--kx-radius);
+  border: 1px solid var(--ft-border);
+  box-shadow: var(--kx-shadow-card);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.option-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--kx-shadow-soft);
+  border-color: var(--ft-blue);
+}
+.option-icon  { font-size: 30px; }
+.option-label { font-weight: 800; font-size: 16px; }
+
+/* Amber promo / info banner — matches marketing $10-off card */
+.alert-box {
+  border-radius: 16px;
+  background: rgba(255, 138, 31, 0.12);
+  border: 1px solid rgba(255, 138, 31, 0.28);
+  box-shadow: none;
+}
+.alert-icon { color: var(--ft-amber); }
+
+/* Numeric keypad — rounded keys, display digits, brand OK with glow */
+.num-key {
+  border-radius: 16px;
+  font-family: var(--kx-font-display);
+  font-weight: 700;
+  border: 1px solid var(--ft-border);
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.num-key.ok { box-shadow: var(--kx-shadow-soft); }
+.cedula-display { border-radius: 16px; }
+
+/* Selectable cards: payment / search / cart */
+.payment-option {
+  border-radius: 16px;
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+.payment-option:hover { transform: translateY(-2px); }
+.payment-option.selected { box-shadow: var(--kx-shadow-card); }
+.search-result-card, .cart-item { transition: background .15s ease; }
+
+/* Prices in brand red, display weight */
+.search-result-price,
+.cart-item-price,
+.proc-total,
+.ticket-total { font-weight: 800; }
+.search-result-price, .cart-item-price { color: var(--ft-blue); }
+
+/* Progress steps — active dot carries the brand glow */
+.step-dot { font-family: var(--kx-font-display); }
+.step.active .step-dot { box-shadow: var(--kx-shadow-soft); }
+.step-name { font-weight: 700; }
+
+/* Profile + cards rounding consistency */
+.profile-badge { box-shadow: var(--kx-shadow-card); }
