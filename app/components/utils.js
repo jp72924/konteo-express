@@ -29,6 +29,8 @@ const _ICON_PATHS = {
   offline: '<path d="M2 8.7a16 16 0 0 1 20 0"/><path d="M5.5 12.2a11 11 0 0 1 13 0"/><path d="M9 15.7a6 6 0 0 1 6 0"/><path d="M12 19.2v.2"/><path d="M3 3l18 18"/>',
   mars:    '<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5 20 4"/><path d="M15 4h5v5"/>',
   venus:   '<circle cx="12" cy="9" r="5.5"/><path d="M12 14.5V21"/><path d="M9 18h6"/>',
+  backspace:'<path d="M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-6.2-6.3a1 1 0 0 1 0-1.4z"/><path d="M16 9.5l-5 5M11 9.5l5 5"/>',
+  checkmark:'<path d="M4.5 12.5 9.5 17.5 19.5 6.5"/>',
 };
 
 /**

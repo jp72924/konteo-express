@@ -8,7 +8,7 @@
 import { navigate }     from '../router.js';
 import { notify }       from '../notify.js';
 import { findCustomer, formatCedula } from '../services/customer.js';
-import { esc, kioskHeader } from './utils.js';
+import { esc, kioskHeader, icon } from './utils.js';
 import { _progressSteps } from './HomeScreen.js';
 
 export const CedulaScreen = {
@@ -57,9 +57,9 @@ export const CedulaScreen = {
             <div class="num-key" data-digit="7">7</div>
             <div class="num-key" data-digit="8">8</div>
             <div class="num-key" data-digit="9">9</div>
-            <div class="num-key del" id="key-del">⌫ Borrar</div>
+            <div class="num-key del" id="key-del" role="button" aria-label="Borrar">${icon('backspace')}</div>
             <div class="num-key" data-digit="0">0</div>
-            <div class="num-key ok" id="key-ok">OK ✓</div>
+            <div class="num-key ok" id="key-ok" role="button" aria-label="Aceptar">${icon('checkmark')}</div>
           </div>
 
           <div class="text-muted">Tus datos se usan solo para identificación</div>
@@ -131,7 +131,7 @@ export const CedulaScreen = {
 
     this._loading = true;
     const okBtn = container.querySelector('#key-ok');
-    if (okBtn) { okBtn.textContent = '…'; okBtn.style.opacity = '0.6'; }
+    if (okBtn) { okBtn.classList.add('is-loading'); okBtn.style.opacity = '0.6'; }
 
     try {
       const customer = await findCustomer(this._prefix, this._digits);
@@ -146,7 +146,7 @@ export const CedulaScreen = {
       notify(err.message || 'Error al buscar. Intenta nuevamente.', 'error');
     } finally {
       this._loading = false;
-      if (okBtn) { okBtn.textContent = 'OK ✓'; okBtn.style.opacity = ''; }
+      if (okBtn) { okBtn.classList.remove('is-loading'); okBtn.style.opacity = ''; }
     }
   },
 };

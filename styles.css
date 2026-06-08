@@ -321,12 +321,13 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 
 .cedula-label { font-size: 11px; color: var(--ft-gray-text); letter-spacing: 1px; text-transform: uppercase; }
 .cedula-value {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   color: var(--ft-blue);
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   min-height: 36px;
-  font-family: 'Courier New', monospace;
+  font-family: var(--kx-font-display);
+  font-variant-numeric: tabular-nums;
 }
 
 .num-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -1270,3 +1271,19 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 .offline-icon      { color: var(--ft-blue); line-height: 0; }
 .proc-error-icon   { color: var(--ft-red); line-height: 0; }
 .method-ico        { color: var(--ft-blue); }
+
+/* ─── Cédula keypad: icon-only Borrar / OK keys ─────────────────── */
+.num-key.del,
+.num-key.ok {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;          /* sizes the 1em .kx-ico */
+  line-height: 0;
+}
+.num-key.del { color: var(--ft-red); }          /* backspace icon red */
+.num-key.del .kx-ico,
+.num-key.ok  .kx-ico { width: 1em; height: 1em; }
+.num-key.ok  .kx-ico { stroke-width: 2.4; }      /* a touch bolder check */
+.num-key.ok.is-loading .kx-ico { animation: kxPulse .8s ease-in-out infinite; }
+@keyframes kxPulse { 0%,100% { opacity: .4; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.05); } }
