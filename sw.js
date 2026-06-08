@@ -44,7 +44,7 @@
  *  Keep CACHE_VERSION in sync with CONFIG.APP_VERSION in index.html.
  */
 
-const CACHE_VERSION = '2.2.0'; // keep in sync with CONFIG.APP_VERSION in index.html
+const CACHE_VERSION = '2.2.1'; // keep in sync with CONFIG.APP_VERSION in index.html
 let   CACHE_NAME    = `retailops-kiosk-v${CACHE_VERSION}`;
 const APP_SHELL_URL = new URL('./index.html', self.location.href).href;
 const SW_URL_PATH = new URL('./sw.js', self.location.href).pathname;
@@ -59,9 +59,8 @@ const SHELL_ASSETS = [
   './index.html',
   './styles.css',
   './manifest.json',
-  './assets/branding/koteo-express-logo.svg',
-  './icons/icon-192.svg',
-  './icons/icon-512.svg',
+  './icons/icon.svg',
+  './assets/branding/konteo-express-logo.svg',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-192-maskable.png',
