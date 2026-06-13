@@ -25,6 +25,7 @@ const ASSETS = [
   'sw.js',
   'app',
   'icons',
+  'assets',
 ];
 
 rmSync(www, { recursive: true, force: true });
