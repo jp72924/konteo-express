@@ -31,11 +31,19 @@ import { api } from '../api.js';
  * }>}
  */
 export async function atomicCheckout(customerId, cartItems, paymentReference, signal, payment = {}) {
-  return api.post('/kiosk/checkout/', {
+  const body = {
     customer_id:       Number(customerId),
     items:             cartItems.map(item => ({ sku: item.sku, quantity: item.qty })),
     payment_reference: paymentReference,
     payment_method:    payment.paymentMethod,
-    receipt:           payment.receipt,
-  }, { signal });
+  };
+
+  // `receipt` is optional but NOT nullable server-side: the checkout serializer
+  // declares it `required=False` without `allow_null`, so sending an explicit
+  // `null` fails validation with {"receipt": ["This field may not be null."]}.
+  // Card/cash/check have no receipt, so the key must be omitted entirely
+  // rather than sent as null.
+  if (payment.receipt) body.receipt = payment.receipt;
+
+  return api.post('/kiosk/checkout/', body, { signal });
 }
