@@ -37,6 +37,9 @@ export async function applySettings() {
       'receipt_image_required_for_receipt_methods',
       s.receipt_image_required_for_receipt_methods !== false,
     );
+    // Drives whether screens act on the verify endpoint's non-blocking
+    // `checks.recipient_match` advisory (checkout enforces it regardless).
+    store.set('recipient_validation_enabled', Boolean(s.recipient_validation_enabled));
 
     // The kiosk renders in the secondary (local) currency, converting from the
     // USD product prices. Use the secondary fields for symbol/decimals/rate.
@@ -58,6 +61,7 @@ export async function applySettings() {
     store.set('ocr_enabled_methods', []);
     store.set('ocr_max_file_mb', 5);
     store.set('receipt_image_required_for_receipt_methods', true);
+    store.set('recipient_validation_enabled', false);
     store.set('exchange_rate_unavailable', true);
   }
 }

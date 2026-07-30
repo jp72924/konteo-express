@@ -116,6 +116,13 @@ function _codeToSpanish(code, status) {
     case 'receipt_field_mismatch': return 'Los datos del formulario no coinciden con el comprobante.';
     case 'amount_mismatch':       return 'El monto del comprobante no coincide con el pedido.';
     case 'incomplete_receipt':    return 'No se pudo leer todo el comprobante.';
+    // The receipt was paid to an account that is not a registered recipient
+    // profile. Retrying can never succeed, so this message must not invite one.
+    case 'recipient_mismatch':    return 'El pago fue enviado a una cuenta no registrada. Pide ayuda a un asociado.';
+    case 'receipt_image_required':   return 'Sube la imagen del comprobante para continuar.';
+    case 'receipt_too_large':        return 'La imagen del comprobante es demasiado grande.';
+    case 'invalid_receipt_image':    return 'No se pudo leer la imagen del comprobante. Toma la foto nuevamente.';
+    case 'unsupported_receipt_type': return 'Formato de imagen no admitido. Usa JPG, PNG, HEIC o HEIF.';
     case 'ocr_disabled':
     case 'ocr_method_disabled':
     case 'timeout':
