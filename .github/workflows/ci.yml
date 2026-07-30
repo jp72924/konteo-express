@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   static-checks:
@@ -31,6 +31,10 @@ jobs:
       - name: Check public config hygiene
         run: |
           test ! -f config.local.js
-          ! grep -R "IjSX7wKyp8JzJi8Or4cqUXfiytD7FBgaj9ylbrR68CoXovvl" .
+          # The revoked key below is a canary: it must never reappear in the
+          # tree. One character is bracketed ([X]) so the regex matches the real
+          # key but not this line — otherwise the check finds itself in this file
+          # and fails on every run. Keep the bracket if you edit this.
+          ! grep -RE "IjSX7wKyp8JzJi8Or4cqUXfiytD7FBgaj9ylbrR68Co[X]ovvl" .
           grep -q '<KIOSK_API_KEY>' index.html
           grep -q '<KIOSK_API_KEY>' config.example.js
