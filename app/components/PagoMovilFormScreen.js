@@ -31,6 +31,9 @@ const METHOD_LABELS = {
 };
 const IMAGE_REQUIRED_MESSAGE = 'Sube la imagen del comprobante para continuar.';
 const RECEIPT_MISMATCH_MESSAGE = 'Corrige los campos marcados para que coincidan con el comprobante.';
+// Recipient mismatch is not fixable from this form — checkout would reject it
+// with `recipient_mismatch`, so block here instead of failing at processing.
+const RECIPIENT_MISMATCH_MESSAGE = 'El pago fue enviado a una cuenta no registrada. Pide ayuda a un asociado.';
 
 export const PagoMovilFormScreen = {
   /** @type {any} */
@@ -60,6 +63,7 @@ export const PagoMovilFormScreen = {
       receiptImageRequired,
       verified: false,
       receiptMatched: false,
+      recipientMismatch: false,
       ocrData: null,
       receiptFields: {},
       expectedFields: {},
@@ -218,6 +222,7 @@ export const PagoMovilFormScreen = {
     this._state.imageType = file.type || 'application/octet-stream';
     this._state.verified = false;
     this._state.receiptMatched = false;
+    this._state.recipientMismatch = false;
     this._state.ocrData = null;
     this._state.receiptFields = {};
     this._state.expectedFields = {};
@@ -251,7 +256,9 @@ export const PagoMovilFormScreen = {
     try {
       const result = await api.postForm('/payments/receipts/verify/', form);
       this._applyOcrResult(container, result);
-      if (this._state.receiptMatched) {
+      if (this._state.recipientMismatch) {
+        this._showStatus(container, 'error', RECIPIENT_MISMATCH_MESSAGE);
+      } else if (this._state.receiptMatched) {
         this._showStatus(container, 'success', 'Comprobante verificado.');
       } else {
         this._showStatus(container, 'error', RECEIPT_MISMATCH_MESSAGE);
@@ -273,6 +280,7 @@ export const PagoMovilFormScreen = {
   _applyOcrResult(container, result) {
     this._state.ocrData = result;
     this._state.receiptFields = _receiptFieldsFromResult(result);
+    this._state.recipientMismatch = _isRecipientMismatch(result);
     this._prefillFromOcr(container, result);
     this._revalidateReceiptFields(container);
   },
@@ -339,6 +347,9 @@ export const PagoMovilFormScreen = {
       this._showStatus(container, 'info', IMAGE_REQUIRED_MESSAGE);
     } else if (receiptValidationRequired && !this._state.ocrAvailable) {
       this._showStatus(container, 'error', 'La validacion automatica no esta disponible. Pide ayuda a un asociado.');
+    } else if (this._state.recipientMismatch) {
+      // Wins over the field-mismatch branches: editing the form cannot fix it.
+      this._showStatus(container, 'error', RECIPIENT_MISMATCH_MESSAGE);
     } else if (
       receiptValidationRequired &&
       hasImage &&
@@ -361,7 +372,8 @@ export const PagoMovilFormScreen = {
     btn.disabled = !(
       complete &&
       (!imageRequired || hasImage) &&
-      (!receiptValidationRequired || this._state.receiptMatched)
+      (!receiptValidationRequired || this._state.receiptMatched) &&
+      !this._state.recipientMismatch
     );
   },
 
@@ -538,6 +550,19 @@ function _receiptFieldsFromResult(result) {
   };
 }
 
+/**
+ * Read the verify endpoint's non-blocking `checks.recipient_match` advisory.
+ *
+ * The backend only fills it in when recipient validation is enabled (it is
+ * `null` otherwise), so the store flag is a guard, not the sole condition:
+ * only an explicit `matched === false` blocks, never a missing/unknown check.
+ */
+function _isRecipientMismatch(result) {
+  if (store.get('recipient_validation_enabled') !== true) return false;
+  const recipientMatch = result?.checks?.recipient_match;
+  return Boolean(recipientMatch) && recipientMatch.matched === false;
+}
+
 function _toDateOnlyLocal(value) {
   if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
     return value.slice(0, 10);
@@ -589,6 +614,9 @@ function _receiptErrorMessage(err) {
   }
   if (err.code === 'amount_mismatch') {
     return 'El monto del comprobante no coincide con el total. Pide ayuda a un asociado.';
+  }
+  if (err.code === 'recipient_mismatch') {
+    return RECIPIENT_MISMATCH_MESSAGE;
   }
   if (err.code === 'incomplete_receipt') {
     return 'No se pudo leer todo el comprobante. Pide ayuda a un asociado.';

@@ -128,6 +128,10 @@ export const ProcessingScreen = {
         this._showError(container, 'Los datos del formulario no coinciden con el comprobante. Pide ayuda para revisar el pago.');
       } else if (err.code === 'amount_mismatch') {
         this._showError(container, 'El monto del comprobante no coincide con el total del pedido. Revisa el comprobante o pide ayuda.');
+      } else if (err.code === 'recipient_mismatch') {
+        // The receipt was paid to an account that is not a registered recipient
+        // profile. A retry can never clear this — send the customer for help.
+        this._showError(container, 'El pago fue enviado a una cuenta no registrada. Pide ayuda a un asociado para revisar el pago.');
       } else if (err.code === 'incomplete_receipt') {
         this._showError(container, 'No se pudo leer todo el comprobante. Pide ayuda para revisar el pago.');
       } else if (_isOcrUnavailable(err)) {

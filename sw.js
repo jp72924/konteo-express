@@ -44,7 +44,7 @@
  *  Keep CACHE_VERSION in sync with CONFIG.APP_VERSION in index.html.
  */
 
-const CACHE_VERSION = '2.3.5'; // keep in sync with CONFIG.APP_VERSION in index.html
+const CACHE_VERSION = '2.3.6'; // keep in sync with CONFIG.APP_VERSION in index.html
 let   CACHE_NAME    = `konteo-express-v${CACHE_VERSION}`;
 const APP_SHELL_URL = new URL('./index.html', self.location.href).href;
 const SW_URL_PATH = new URL('./sw.js', self.location.href).pathname;

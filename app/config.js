@@ -29,6 +29,16 @@ if (!window.__KIOSK_CONFIG__) {
 
 const _raw = window.__KIOSK_CONFIG__ ?? {};
 
+/** True when `url` points at a loopback host (a potentially trustworthy origin). */
+function _isLoopbackUrl(url) {
+  try {
+    const host = new URL(String(url)).hostname.toLowerCase();
+    return host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host === '::1';
+  } catch {
+    return false;
+  }
+}
+
 // ─── Required field validation ────────────────────────────────────────────────
 
 const _REQUIRED = [
@@ -62,10 +72,17 @@ if (!Array.isArray(_raw.ENABLED_PAYMENT_METHODS) || _raw.ENABLED_PAYMENT_METHODS
 // backend — the browser blocks the request. On phones/tablets the kiosk is
 // typically installed over HTTPS, so an http:// BASE_URL would silently fail
 // every API call. Surface this at startup instead of leaving mute errors.
+//
+// Loopback is exempt: browsers treat http://localhost and http://127.0.0.1 as
+// potentially trustworthy origins, so mixed-content blocking does not apply to
+// them. That exemption is what makes a native debug build (origin
+// https://localhost) usable against a dev backend reached over
+// `adb reverse tcp:8000 tcp:8000`.
 if (
   typeof location !== 'undefined' &&
   location.protocol === 'https:' &&
-  /^http:\/\//i.test(String(_raw.BASE_URL ?? ''))
+  /^http:\/\//i.test(String(_raw.BASE_URL ?? '')) &&
+  !_isLoopbackUrl(_raw.BASE_URL)
 ) {
   CONFIG_ERRORS.push(
     'BASE_URL usa http:// pero el kiosco se sirve sobre https://. ' +
