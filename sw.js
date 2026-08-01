@@ -44,7 +44,7 @@
  *  Keep CACHE_VERSION in sync with CONFIG.APP_VERSION in index.html.
  */
 
-const CACHE_VERSION = '2.3.6'; // keep in sync with CONFIG.APP_VERSION in index.html
+const CACHE_VERSION = '2.3.7'; // keep in sync with CONFIG.APP_VERSION in index.html
 let   CACHE_NAME    = `konteo-express-v${CACHE_VERSION}`;
 const APP_SHELL_URL = new URL('./index.html', self.location.href).href;
 const SW_URL_PATH = new URL('./sw.js', self.location.href).pathname;
@@ -80,6 +80,7 @@ const SHELL_ASSETS = [
   './app/services/orders.js',
   './app/services/payments.js',
   './app/services/products.js',
+  './app/services/recipients.js',
   './app/services/settings.js',
   './app/components/utils.js',
   './app/components/HomeScreen.js',
@@ -87,6 +88,7 @@ const SHELL_ASSETS = [
   './app/components/RegistroScreen.js',
   './app/components/ScanScreen.js',
   './app/components/PaymentScreen.js',
+  './app/components/PaymentAccountScreen.js',
   './app/components/PagoMovilFormScreen.js',
   './app/components/ProcessingScreen.js',
   './app/components/SuccessScreen.js',

@@ -19,6 +19,7 @@ const _ICON_PATHS = {
   bank:    '<path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 21h18"/>',
   card:    '<rect x="2.5" y="5" width="19" height="14" rx="2.6"/><path d="M2.5 10h19"/><path d="M6 15h4"/>',
   document:'<path d="M6 2.5h7l5 5v14H6z"/><path d="M13 2.5v5h5"/><path d="M9 13h6M9 16.5h4"/>',
+  copy:    '<rect x="9" y="9" width="12.5" height="12.5" rx="2.4"/><path d="M5.5 15H4a1.5 1.5 0 0 1-1.5-1.5v-10A1.5 1.5 0 0 1 4 2h10a1.5 1.5 0 0 1 1.5 1.5V5"/>',
   swap:    '<path d="M4 9h13l-3.2-3.2"/><path d="M20 15H7l3.2 3.2"/>',
   lock:    '<rect x="5" y="11" width="14" height="9.5" rx="2.4"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
   warning: '<path d="M12 3.2 2.5 20h19z"/><path d="M12 10v4"/><path d="M12 16.8v.4"/>',

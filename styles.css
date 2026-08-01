@@ -691,6 +691,33 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
   padding-top: 10px;
 }
 
+/* Groups a row's label+value so a trailing action (e.g. a copy button) can sit
+   beside them. flex:1 makes this absorb the free space, so the parent row's
+   space-between has nothing left to distribute and the action lands hard right.
+   Rows without an action are unaffected — they never use this wrapper. */
+.summary-row-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+/* margin, not padding: .receipt-link is declared later in this file and sets
+   `padding: 4px 0`, which would win at equal specificity and collapse the gap. */
+.row-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: 14px;
+}
+
+.row-copy-btn .kx-ico { width: 13px; height: 13px; }
+.row-copy-btn:disabled { color: var(--ft-green); cursor: default; }
+
 /* ─── Alert box ──────────────────────────────────────────────── */
 .alert-box {
   background: #FFF3E0;
@@ -749,6 +776,21 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 
 .pay-checkmark { color: var(--ft-on-primary); font-size: 11px; display: none; }
 .payment-option.selected .pay-checkmark { display: block; }
+
+.payment-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.payment-option-unavailable {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ft-red);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin-top: 2px;
+}
 
 /* ─── Receipt capture ────────────────────────────────────────── */
 .receipt-step-label {
@@ -983,6 +1025,50 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
   font-weight: 600;
   margin: 2px;
 }
+
+/* Trust indicator: this account came straight from the configured primary
+   recipient profile, i.e. the same allowlist checkout validates against. */
+.chip-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 138, 90, 0.10);
+  color: var(--ft-green);
+}
+
+.chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ft-green);
+  flex-shrink: 0;
+}
+
+.btn-copy-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: var(--ft-surface);
+  color: var(--ft-blue);
+  border: 1.5px solid var(--ft-blue);
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.btn-copy-all:hover  { background: var(--ft-primary-soft); }
+.btn-copy-all:active { transform: scale(.98); }
+.btn-copy-all:disabled {
+  color: var(--ft-green);
+  border-color: var(--ft-green);
+  background: rgba(22, 138, 90, 0.08);
+  cursor: default;
+}
+.btn-copy-all .kx-ico { width: 14px; height: 14px; }
 
 /* ─── Progress step transitions ──────────────────────────────── */
 .step-dot  { transition: background .3s ease, color .3s ease, box-shadow .3s ease; }

@@ -24,6 +24,7 @@ import { CedulaScreen }     from './components/CedulaScreen.js';
 import { RegistroScreen }   from './components/RegistroScreen.js';
 import { ScanScreen }       from './components/ScanScreen.js';
 import { PaymentScreen }    from './components/PaymentScreen.js';
+import { PaymentAccountScreen } from './components/PaymentAccountScreen.js';
 import { PagoMovilFormScreen } from './components/PagoMovilFormScreen.js';
 import { ProcessingScreen } from './components/ProcessingScreen.js';
 import { SuccessScreen }    from './components/SuccessScreen.js';
@@ -37,6 +38,7 @@ const SCREENS = {
   registro:   RegistroScreen,
   scan:       ScanScreen,
   payment:    PaymentScreen,
+  'payment-account': PaymentAccountScreen,
   'pago-movil-form': PagoMovilFormScreen,
   processing: ProcessingScreen,
   success:    SuccessScreen,

@@ -11,6 +11,8 @@ import { navigate } from '../router.js';
 import { formatDual } from '../currency.js';
 import { esc, kioskHeader, icon } from './utils.js';
 import { _progressSteps } from './HomeScreen.js';
+import { fetchRecipientProfiles } from '../services/recipients.js';
+import { notify } from '../notify.js';
 
 /** Display map: RetailOps payment_method value → { label, desc, icon } */
 const PAYMENT_DISPLAY = {
@@ -29,6 +31,16 @@ export const PaymentScreen = {
   _selected: '',
   /** @type {(() => void) | null} Unsubscribe for exchange_rate_unavailable */
   _rateUnsub: null,
+  /** @type {AbortController | null} */
+  _recipientAbort: null,
+  /**
+   * Resolves to { mobile_payment, bank_transfer } (each a profile object or
+   * null) once the recipient-profiles prefetch settles. Never rejects except
+   * on abort — the confirm handler awaits this directly instead of reading a
+   * possibly-still-pending store value, so it always sees the real result.
+   * @type {Promise<{mobile_payment: object|null, bank_transfer: object|null}> | null}
+   */
+  _recipientPromise: null,
 
   mount(container, _params = {}) {
     this._rateUnsub = null;
@@ -112,6 +124,7 @@ export const PaymentScreen = {
     // Method selection
     container.querySelectorAll('.payment-option').forEach(card => {
       card.addEventListener('click', () => {
+        if (card.classList.contains('disabled')) return;
         self._selected = card.dataset.method;
         container.querySelectorAll('.payment-option').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
@@ -119,14 +132,35 @@ export const PaymentScreen = {
     });
 
     // Confirm
-    container.querySelector('#btn-confirm').addEventListener('click', () => {
+    const confirmBtn = container.querySelector('#btn-confirm');
+    confirmBtn.addEventListener('click', async () => {
       const needsReceipt = RECEIPT_METHODS.includes(self._selected);
       const enabledMethods = store.get('ocr_enabled_methods') ?? [];
       const ocrAvailable = Boolean(
         store.get('ocr_enabled') && enabledMethods.includes(self._selected)
       );
 
-      navigate(needsReceipt ? 'pago-movil-form' : 'processing', {
+      if (needsReceipt) {
+        // The visual disabling below is only the first line of defense (it
+        // can lag the fetch, or miss a race). This await is the authoritative
+        // guarantee: never navigate to a destination we haven't confirmed
+        // exists, per KIOSK_INTEGRATION.md's "never fall back to a hardcoded
+        // destination" guidance.
+        confirmBtn.disabled = true;
+        const originalLabel = confirmBtn.innerHTML;
+        confirmBtn.textContent = 'Verificando…';
+        const profiles = await self._recipientPromise;
+        if (profiles[self._selected] == null) {
+          notify('Este método de pago no está disponible en este momento.', 'error');
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = originalLabel;
+          return;
+        }
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalLabel;
+      }
+
+      navigate(needsReceipt ? 'payment-account' : 'processing', {
         paymentMethod: self._selected,
         totalUsd:      total,
         ocrAvailable,
@@ -144,11 +178,71 @@ export const PaymentScreen = {
     this._rateUnsub = store.on('exchange_rate_unavailable', (unavailable) => {
       if (rateWarningEl) rateWarningEl.style.display = unavailable ? '' : 'none';
     });
+
+    // Prefetch the primary recipient profile for each receipt method so the
+    // account-details screen never has to fetch on its own, and so unconfigured
+    // methods can be greyed out here before the customer picks a dead end.
+    // Fired once per mount, never polled (KIOSK_INTEGRATION.md:132-134).
+    this._recipientAbort = new AbortController();
+    this._recipientPromise = fetchRecipientProfiles(this._recipientAbort.signal)
+      .then(map => {
+        store.set('recipient_profiles', map);
+        self._applyAvailability(container, map);
+        return map;
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') return { mobile_payment: null, bank_transfer: null };
+        // Fetch failed outright — treat exactly like "nothing configured"
+        // rather than silently leaving receipt methods selectable with an
+        // unverified destination.
+        const empty = { mobile_payment: null, bank_transfer: null };
+        store.set('recipient_profiles', empty);
+        self._applyAvailability(container, empty);
+        return empty;
+      });
+  },
+
+  /**
+   * Grey out any receipt-method card with no configured primary profile, and
+   * reselect if the card that just became disabled was the active selection.
+   * @param {HTMLElement} container
+   * @param {{mobile_payment: object|null, bank_transfer: object|null}} map
+   */
+  _applyAvailability(container, map) {
+    if (!container.querySelector('#btn-confirm')) return; // screen unmounted
+
+    let needsReselect = false;
+    RECEIPT_METHODS.forEach(method => {
+      if (map[method] != null) return;
+      const card = container.querySelector(`.payment-option[data-method="${method}"]`);
+      if (!card || card.classList.contains('disabled')) return;
+      card.classList.add('disabled');
+      const badge = document.createElement('div');
+      badge.className = 'payment-option-unavailable';
+      badge.textContent = 'No disponible';
+      card.querySelector('.payment-option-desc')?.after(badge);
+      if (this._selected === method) needsReselect = true;
+    });
+
+    if (!needsReselect) return;
+
+    const nextMethod = CONFIG.ENABLED_PAYMENT_METHODS.find(
+      m => !RECEIPT_METHODS.includes(m) || map[m] != null,
+    );
+    if (!nextMethod) return; // every configured method is unavailable
+
+    this._selected = nextMethod;
+    container.querySelectorAll('.payment-option').forEach(c => {
+      c.classList.toggle('selected', c.dataset.method === nextMethod);
+    });
   },
 
   unmount() {
     this._rateUnsub?.();
     this._rateUnsub = null;
+    this._recipientAbort?.abort();
+    this._recipientAbort = null;
+    this._recipientPromise = null;
     this._selected  = '';
   },
 };

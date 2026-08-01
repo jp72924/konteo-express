@@ -167,7 +167,14 @@ export const PagoMovilFormScreen = {
 
   _bind(container) {
     container.querySelector('#back-btn')?.addEventListener('click', () => {
-      navigate('payment');
+      // Back to the account-details screen (not straight to PaymentScreen) so
+      // back-navigation doesn't skip past it; forward the current method/total
+      // so it re-renders correctly instead of falling back to defaults.
+      navigate('payment-account', {
+        paymentMethod: this._state.paymentMethod,
+        totalUsd: this._state.totalUsd,
+        ocrAvailable: this._state.ocrAvailable,
+      });
     });
 
     container.querySelector('#receipt-file')?.addEventListener('change', (e) => {
