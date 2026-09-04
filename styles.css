@@ -577,14 +577,29 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 
 .cart-list { display: flex; flex-direction: column; gap: 10px; }
 
+/* Two-row grid, not a single flex row. The stepper, the line total and the
+   remove button are all fixed-width, so on one row they left the name/SKU
+   column as the only elastic element — and a large Bs figure grew the total
+   until that column collapsed to nothing (name clipped to "B..", SKU broken
+   mid-token). Giving the total its own row means the text column's width no
+   longer depends on how many digits the price has.
+
+   The right-hand column is sized by the remove button alone; the total sits
+   in the footer row spanning both columns, so a wider price can never claw
+   width back from the name above it. */
 .cart-item {
   background: var(--ft-surface);
   border-radius: 12px;
   border: 1px solid var(--ft-border);
   padding: 11px 13px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "thumb info   remove"
+    "thumb footer footer";
   align-items: center;
-  gap: 11px;
+  column-gap: 11px;
+  row-gap: 9px;
   transition: border-color .15s;
 }
 
@@ -592,7 +607,10 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 
 .cart-item-emoji { font-size: 22px; flex-shrink: 0; }
 
-.cart-item-info { flex: 1; min-width: 0; }
+/* Top-aligned, not centred across both rows: the thumbnail labels the name
+   beside it, and centring leaves it stranded in the middle of a taller card. */
+.cart-item > .product-thumb { grid-area: thumb; align-self: start; }
+.cart-item-info { grid-area: info; min-width: 0; }
 .cart-item-name {
   font-size: 13px;
   font-weight: 600;
@@ -603,7 +621,32 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 }
 .cart-item-detail { font-size: 11px; color: var(--ft-gray-text); margin-top: 2px; }
 
-.cart-item-price { font-size: 14px; font-weight: 700; color: var(--ft-blue); flex-shrink: 0; }
+/* Keeps a hyphenated SKU (PENS-BP-10) and the unit price each intact — the
+   line may wrap at the separator between them, never inside either one. */
+.cart-item-detail > span { white-space: nowrap; }
+
+/* Wraps so that at extreme magnitudes the total drops to its own full-width
+   line beneath the stepper, rather than being squeezed beside it. */
+.cart-item-footer {
+  grid-area: footer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 11px;
+  min-width: 0;
+}
+
+/* nowrap keeps "Bs." bound to its digits — without it the amount breaks after
+   the symbol and the figure reads as two fragments. margin-left keeps it
+   right-aligned both beside the stepper and when it wraps below it. */
+.cart-item-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ft-blue);
+  white-space: nowrap;
+  margin-left: auto;
+}
 
 .qty-badge {
   background: var(--ft-blue);
@@ -620,6 +663,8 @@ input[type="date"].ft-input::-webkit-calendar-picker-indicator { opacity: .5; cu
 }
 
 .cart-item-remove {
+  grid-area: remove;
+  align-self: start;
   background: none;
   border: none;
   cursor: pointer;
