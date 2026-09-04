@@ -547,15 +547,17 @@ function _renderCart(cart) {
         ${_productThumb(item, 'cart-product-thumb')}
         <div class="cart-item-info">
           <div class="cart-item-name">${esc(item.name)}</div>
-          <div class="cart-item-detail">SKU: ${esc(item.sku)} · ${formatDual(item.unit_price)} c/u</div>
+          <div class="cart-item-detail"><span>SKU: ${esc(item.sku)}</span> · <span>${formatDual(item.unit_price)} c/u</span></div>
         </div>
-        <div class="qty-stepper">
-          <button class="qty-btn qty-dec" data-id="${item.id}" ${item.qty <= 1 ? 'disabled' : ''} aria-label="Reducir cantidad">−</button>
-          <span class="qty-value">${item.qty}</span>
-          <button class="qty-btn qty-inc" data-id="${item.id}" aria-label="Aumentar cantidad">+</button>
-        </div>
-        <div class="cart-item-price">${formatDual(Number(item.unit_price) * item.qty)}</div>
         <button class="cart-item-remove" data-id="${item.id}" aria-label="Eliminar producto">✕</button>
+        <div class="cart-item-footer">
+          <div class="qty-stepper">
+            <button class="qty-btn qty-dec" data-id="${item.id}" ${item.qty <= 1 ? 'disabled' : ''} aria-label="Reducir cantidad">−</button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn qty-inc" data-id="${item.id}" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <div class="cart-item-price">${formatDual(Number(item.unit_price) * item.qty)}</div>
+        </div>
       </div>
     `).join('')}
   </div>`;
