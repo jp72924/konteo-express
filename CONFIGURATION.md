@@ -49,8 +49,7 @@ window.__KIOSK_CONFIG__ = {
 | `BRAND_SUBTITLE` | `autopago` | Small subtitle below brand name. |
 | `BRAND_SHOW_TEXT` | `true` | Show text next to the logo. |
 | `KIOSK_THEME` | blue RetailOps palette | Theme color map. |
-| `USD_TO_BS_RATE` | `1` | Static fallback exchange rate. |
-| `EXCHANGE_RATE_API_URL` | empty | Optional live exchange-rate endpoint. |
+| `USD_TO_BS_RATE` | `1` | Fallback exchange rate, used only until the backend's rate loads and if it never does. The live rate always comes from the backend's `GET /settings/`, re-read when each sale starts. |
 | `CURRENCY_SYMBOL` | `Bs.` | Local currency symbol. |
 | `DECIMAL_PLACES` | `2` | Local currency decimal places. |
 | `LOW_STOCK_THRESHOLD` | `5` | Low-stock marker in product search. |
