@@ -2,12 +2,14 @@
  * HomeScreen.js — Welcome screen (Step 1 of 5).
  *
  * Offers the primary "Pagar productos" action plus a "Pedir ayuda" card.
- * Navigates to the Cédula screen on "Pagar productos".
+ * Navigates to the Cédula screen on "Pagar productos", which is where every
+ * sale starts — so that tap also re-reads the backend settings.
  */
 
-import { CONFIG }   from '../config.js';
-import { navigate } from '../router.js';
-import { notify }   from '../notify.js';
+import { CONFIG }          from '../config.js';
+import { navigate }        from '../router.js';
+import { notify }          from '../notify.js';
+import { refreshSettings } from '../services/settings.js';
 import { esc, kioskHeader, icon } from './utils.js';
 
 export const HomeScreen = {
@@ -59,6 +61,9 @@ export const HomeScreen = {
     this._el = container;
 
     container.querySelector('#btn-shop').addEventListener('click', () => {
+      // Not awaited: the customer types their cédula while it lands, and no
+      // screen before the cart shows a price.
+      refreshSettings();
       navigate('cedula');
     });
 
