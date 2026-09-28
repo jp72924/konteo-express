@@ -171,7 +171,6 @@ const _cfg = {
 
   // ── Currency ──────────────────────────────────────────────────────────────
   USD_TO_BS_RATE:             Number(_raw.USD_TO_BS_RATE)            || 1,
-  EXCHANGE_RATE_API_URL:      String(_raw.EXCHANGE_RATE_API_URL      ?? ''),
   CURRENCY_SYMBOL:            String(_raw.CURRENCY_SYMBOL            ?? 'Bs.'),
   DECIMAL_PLACES:             Number(_raw.DECIMAL_PLACES)            >= 0
                                 ? Number(_raw.DECIMAL_PLACES)
