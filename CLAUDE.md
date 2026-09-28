@@ -72,7 +72,9 @@ one backend transaction. Don't reintroduce a multi-step create/confirm/pay flow.
 **Theme/currency**: `config.js` validates theme colors (`_isSafeCssColor`), `theme.js`
 maps them to `--ft-*` CSS custom properties. `currency.js` boots with the static
 `USD_TO_BS_RATE` then `applySettings()` overrides symbol/decimals/rate from backend
-`/settings/`. UI copy is Spanish (`es-VE`).
+`/settings/`. `HomeScreen` calls `refreshSettings()` when a sale starts, so every
+customer sees the rate the backend will convert their receipt at; unlike the boot
+read, a failed refresh keeps the last applied settings. UI copy is Spanish (`es-VE`).
 
 **Service worker** (`sw.js`): HTML = network-first (avoids blank-screen from stale
 shell), other same-origin assets = cache-first, cross-origin API (different port) not
